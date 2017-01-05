@@ -1,0 +1,46 @@
+<html>
+<head>
+<meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    <title>台中市公車-路線規劃</title>
+</head>
+<body>
+    <center>
+    <header class="bar bar-nav">
+        <h1 class="title" style="background-color:green;">
+<!--
+            <script>
+                function SearchStart(){
+                    document.getElementById("start").value = StartSet.value;
+                }
+            </script>
+-->
+            
+            <a href="plan.html"><img src="img/back.PNG" style="width:50px;height:50px"></a>查詢起點<br>
+            <form>
+                <input type="text" name="起點" value="起點:我的位置" id="StartSet" style="width:70%;">
+                <button onclick="plan.html" style="height:50px; width:50px"><img src="img/search.png" style="heigth:100%; width:100%;"></button>
+            </form>
+        </h1>
+    </header>
+        <div id="map" style="width:100%; height:100% ;background:yellow"></div>
+        
+        <script>
+        function planMap() {
+            var mapOptions = {
+                center: new google.maps.LatLng(51.5, -0.12),
+                zoom: 10,
+                mapTypeId: google.maps.MapTypeId.HYBRID
+            }
+        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        }
+        </script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-IneeiPQPfvntslGXQuIrOG1PR7OH-Bg&callback=planMap"></script>
+    </center>
+</body>
+</html>
