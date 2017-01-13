@@ -8,6 +8,22 @@
     <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
     <!---->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            console.log("ready");
+            $.getJSON("http://120.108.111.157/~103021046/www/api/final_test/json.php",function(result){
+                console.log(result);
+                var count = 1;
+                $.each(result,function(i,field){
+                    count++;
+                    if(count<=43){
+                        $("#listview").append("第"+(count-1)+"站:"+field.line_stopname+"\n");
+                    }
+                });
+            });
+        });
+    </script>
     
     <title>台中市公車-路線搜尋</title>
     <style>
@@ -31,9 +47,6 @@
                 <form>
                     <input data-type="search" id="filterControlgroup-input">
                 </form>
-                <div data-role="controlgroup" data-filter="true" data-input="#filterControlgroup-input">
-                    <a href="line_1.html" class="ui-btn ui-shadow ui-corner-all"><font size="3">1號公車<br>道禾六藝文化館-中臺科技大學校區</font></a><br>
-                </div>
                 <div data-role="controlgroup" data-filter="true" data-input="#filterControlgroup-input"></div>
             </h1>
         </center>
@@ -41,14 +54,7 @@
     
     <div id="content">
         <center>
-        <!--
-        <img src="img/search.png"><br>
-        <label style="height:100px">請由下方鍵盤輸入關鍵字<br>沒有搜尋結果</label>
-        -->
-            <!--<table border="1">
-                <a href="connect.php"><td>路線1</td>
-                    <td>道禾六藝文化館-中臺科技大學校區</td></a>
-            </table>-->
+            <textarea id="listview" rows="20" cols="40"></textarea> 
         </center>
     </div>
     

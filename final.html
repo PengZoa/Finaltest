@@ -6,33 +6,57 @@
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
     <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
     <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    
+    <link rel="stylesheet" href="/maps/documentation/javascript/demos/demos.css">
+
     <title>台中市公車-路線規劃</title>
 </head>
 <body>
     <center>
     <header class="bar bar-nav">
         <h1 class="title" style="background-color:green;">
-            <a href="index.html"><img src="img/back.PNG" style="width:50px;height:50px"></a>查詢終點<br>
-            <form>
-                <input type="text" name="終點" value="終點:我的位置" id="FinalSet" style="width:70%;">
+            <a href="plan.html"><img src="img/back.PNG" style="width:50px;height:50px"></a>查詢終點<br>
+            <form action="plan.html">
+                終點:<input type="text" name="終點" value="我的位置" id="FinalSet" style="width:50%;">
                 <input type="submit" name="查詢終點" value="查詢終點">
             </form>
         </h1>
     </header>
-        <div id="map" style="width:100%; height:100% ;background:yellow"></div>
+        <div id="map" style="width:100%; height:75% ;background:yellow"></div>
         
         <script>
-        function planMap() {
-            var mapOptions = {
-                center: new google.maps.LatLng(51.5, -0.12),
-                zoom: 10,
-                mapTypeId: google.maps.MapTypeId.HYBRID
+        var test = document.getElementById("out");
+        function gofindme(){
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(showPosition);
+            }else{
+                test.innerHTML = "Geolocation is not supported by this browser.";
             }
-        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
         }
-        </script>
+        
+        function showPosition(position){
+            <!--Google Map-->
+            var lat = Math.ceil(position.coords.latitude*100)/100;
+            var long = Math.ceil(position.coords.longitude*100)/100;
+            document.getElementById("FinalSet").value = lat+","+long;
+            var myLatLng = {lat: lat, lng: long};
 
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-IneeiPQPfvntslGXQuIrOG1PR7OH-Bg&callback=planMap"></script>
+            // Create a map object and specify the DOM element for display.
+            var map = new google.maps.Map(document.getElementById('map'), {
+              center: myLatLng,
+              scrollwheel: false,
+              zoom: 10
+            });
+
+            // Create a marker and set its position.
+            var marker = new google.maps.Marker({
+              map: map,
+              position: myLatLng,
+              title: 'Hello Map!'
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-IneeiPQPfvntslGXQuIrOG1PR7OH-Bg&callback=gofindme"async defer></script>
     </center>
 </body>
 </html>

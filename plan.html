@@ -6,36 +6,77 @@
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
     <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
     <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    
+    <link rel="stylesheet" href="/maps/documentation/javascript/demos/demos.css">
+    <link href="start.html">
+    <link href="final.html">
     <title>台中市公車-路線規劃</title>
 </head>
 <body>
+    <script>
+        var start = document.getElementById("start").value;
+        var final = document.getElementById("FinalSet").value;
+        document.getElementById("start").value = start;
+        document.getElementById("final").value = final;
+    </script>
     <center>
     <header class="bar bar-nav">
         <h1 class="title" style="background-color:green;">
             <a href="index.html"><img src="img/back.PNG" style="width:50px; height:50px"></a>路線規劃
                 <form action="start.html">
-                    <input type="submit" name="起點" value="起點:我的位置" id="start" style="width:70%;">
+                    <input type="submit" id="start" name="start" value="起點:我的位置" id="start" style="width:70%;">
                 </form>
                 <img src="img/change.PNG" style="width:40px;height:60px" aligen="right">
                 <form action="final.html">
-                    <input type="submit" name="終點" value="終點:我的位置" id="final" style="width:70%;">
+                    <input type="submit" id="final" name="final" value="終點:我的位置" id="final" style="width:70%;">
                 </form>
         </h1>
     </header>        
-        <div id="map" style="width:100%; height:100% ;background:yellow"></div>
+        <div id="map" style="width:100%; height:60% ;background:yellow"></div>
         
         <script>
-        function planMap() {
-            var mapOptions = {
-                center: new google.maps.LatLng(51.5, -0.12),
-                zoom: 10,
-                mapTypeId: google.maps.MapTypeId.HYBRID
+        var test = document.getElementById("out");
+        function gofindme(){
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(showPosition);
+            }else{
+                test.innerHTML = "Geolocation is not supported by this browser.";
             }
-        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
         }
-        </script>
+        
+        function showPosition(){
+            <!--Google Map-->
+            var chicago = {lat: 24.046202, lng: 120.687405};
+            var indianapolis = {lat: 24.146818, lng: 120.734851};
 
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-IneeiPQPfvntslGXQuIrOG1PR7OH-Bg&callback=planMap"></script>
+            var map = new google.maps.Map(document.getElementById('map'), {
+              center: chicago,
+              scrollwheel: false,
+              zoom: 7
+            });
+
+            var directionsDisplay = new google.maps.DirectionsRenderer({
+              map: map
+            });
+
+            // Set destination, origin and travel mode.
+            var request = {
+              destination: indianapolis,
+              origin: chicago,
+              travelMode: 'DRIVING'
+            };
+
+            // Pass the directions request to the directions service.
+            var directionsService = new google.maps.DirectionsService();
+            directionsService.route(request, function(response, status) {
+              if (status == 'OK') {
+                // Display the route on the map.
+                directionsDisplay.setDirections(response);
+              }
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-IneeiPQPfvntslGXQuIrOG1PR7OH-Bg&callback=showPosition"async defer></script>
     </center>
 </body>
 </html>
